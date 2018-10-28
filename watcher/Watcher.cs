@@ -17,7 +17,7 @@ namespace Watcher
         [Required]
         [Option(
             "-i|--source",
-            "Folder to synchronyze files from",
+            "Folder to synchronize files from",
             CommandOptionType.SingleValue)]
         [DirectoryExists]
         public static String Source { get; }
@@ -25,7 +25,7 @@ namespace Watcher
         [Required]
         [Option(
             "-o|--sink",
-            "Folder to synchronyze files to",
+            "Folder to synchronize files to",
             CommandOptionType.SingleValue)]
         [DirectoryExists]
         public static String Sink { get; }
