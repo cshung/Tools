@@ -12,7 +12,7 @@ namespace Watcher
         [Option("-g|--glob",
             "Glob that specifies files to mirror. (Default is all files).",
             CommandOptionType.SingleValue)]
-        public static String Glob { get; } = "";
+        public static String Glob { get; } = "*.*";
 
         [Required]
         [Option(
