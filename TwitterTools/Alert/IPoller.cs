@@ -2,6 +2,6 @@
 {
     public interface IPoller
     {
-        bool Poll();
+        string Poll();
     }
 }

@@ -12,9 +12,9 @@
             string apiKeySecret = ConfigurationManager.AppSettings["apiKeySecret"];
             string accessToken = ConfigurationManager.AppSettings["accessToken"];
             string accessTokenSecret = ConfigurationManager.AppSettings["accessTokenSecret"];
-            var tokens = Tokens.Create(apiKey, apiKeySecret, accessToken, accessTokenSecret);
-            string message = "hello";
-            tokens.Statuses.Update(status => message + "\n" + Guid.NewGuid().ToString());
+            Tokens tokens = Tokens.Create(apiKey, apiKeySecret, accessToken, accessTokenSecret);
+            string message = args[0];
+            tokens.Statuses.Update(status => args[0] + "\n" + DateTime.Now);
         }
     }
 }

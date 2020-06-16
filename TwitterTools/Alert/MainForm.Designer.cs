@@ -32,6 +32,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.textLabel = new System.Windows.Forms.Label();
             this.pollingTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
@@ -52,7 +53,7 @@
             // pollingTimer
             // 
             this.pollingTimer.Enabled = true;
-            this.pollingTimer.Interval = 60000;
+            this.pollingTimer.Interval = 1000;
             this.pollingTimer.Tick += new System.EventHandler(this.OnPollingTimerTick);
             // 
             // MainForm
@@ -61,6 +62,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 402);
             this.Controls.Add(this.textLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.Text = "Alert";

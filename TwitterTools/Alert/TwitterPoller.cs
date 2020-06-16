@@ -14,21 +14,26 @@
             this.tokens = Tokens.Create(apiKey, apiKeySecret, accessToken, accessTokenSecret);
         }
 
-        public bool Poll()
+        public string Poll()
         {
+            var timeline = tokens.Statuses.HomeTimeline();
             if (!this.initialized)
             {
-                this.baseLine = tokens.Statuses.HomeTimeline().Count;
+                this.baseLine = timeline.Count;
                 this.initialized = true;
-            }
-            if (tokens.Statuses.HomeTimeline().Count != this.baseLine)
-            {
-                this.initialized = false;
-                return true;
+                return null;
             }
             else
             {
-                return false;
+                if (timeline.Count != this.baseLine)
+                {
+                    this.baseLine = timeline.Count;
+                    return timeline[0].Text;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

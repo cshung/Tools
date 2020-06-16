@@ -7,6 +7,7 @@
     {
         private string text;
         private IPoller poller;
+        private int counter = 0;
 
         public MainForm(IPoller poller) : base()
         {
@@ -28,10 +29,17 @@
 
         private void OnPollingTimerTick(object sender, EventArgs e)
         {
-            if (this.poller.Poll())
+            if (this.counter % 60 == 0)
             {
-                this.GoFullScreen();
+                string result = this.poller.Poll();
+                if (result != null)
+                {
+                    this.text = result;
+                    this.GoFullScreen();
+                }
             }
+            this.Text = string.Format("{0}: {1} seconds to go until the next poll.", this.counter / 60, 60 - this.counter % 60);
+            this.counter++;
         }
 
         private void OnMainFormClicked(object sender, MouseEventArgs e)
