@@ -10,6 +10,7 @@
         {
             return new Weekly
             {
+                Text = this.Text,
                 Records = new DayOfWeekRecord[]
                 {
                     new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Monday, DailyValue = this.DailyValue },
