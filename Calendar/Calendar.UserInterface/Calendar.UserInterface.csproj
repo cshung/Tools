@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Calendar\Calendar.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
   </ItemGroup>
 
 </Project>

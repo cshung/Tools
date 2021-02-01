@@ -12,6 +12,7 @@
     {
         private readonly IMainWindow mainWindow;
         private readonly MinimizeCommand minimizeCommand;
+        private readonly TodayCommand todayCommand;
         private readonly Alarm alarm;
         private List<Alert> futureAlerts;
         private List<Alert> pastDueAlerts;
@@ -21,6 +22,7 @@
             this.mainWindow = mainWindow;
             this.alarm = new Alarm(DateTimeExtensions.NowSafe(), this.CreateScheduleItem());
             this.minimizeCommand = new MinimizeCommand(this);
+            this.todayCommand = new TodayCommand(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,6 +32,13 @@
             get
             {
                 return this.minimizeCommand;
+            }
+        }
+        public ICommand TodayCommand
+        {
+            get
+            {
+                return this.todayCommand;
             }
         }
 
@@ -45,6 +54,14 @@
 
                 return futureAlertModels;
             }
+        }
+
+        internal void OnTodayButtonClicked()
+        {
+            DateTime now = DateTime.Now;
+            DateTime today = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            this.alarm.SetHandledTime(today);
+            this.ScheduleNextAlert();
         }
 
         public List<AlertViewModel> PastDueAlerts

@@ -82,6 +82,11 @@
             return mostRecentAlerts;
         }
 
+        public void SetHandledTime(DateTime today)
+        {
+            this.handledTime = today;
+        }
+
         public List<Alert> GetPastDues(DateTime currentNow)
         {
             List<Alert> pastdues = new List<Alert>();

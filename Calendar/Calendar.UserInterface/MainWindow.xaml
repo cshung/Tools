@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calendar.UserInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Icon="/Icon.ico">
     <!-- Consider using a ListView/GridView -->
     <StackPanel>
         <TextBlock>Past due</TextBlock>
@@ -33,5 +33,6 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <Button Command="{Binding Path=MinimizeCommand}">Minimize</Button>
+        <Button Command="{Binding Path=TodayCommand}">Check Today's Schedule</Button>
     </StackPanel>
 </Window>
