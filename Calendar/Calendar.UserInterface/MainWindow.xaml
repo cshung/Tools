@@ -6,32 +6,39 @@
         xmlns:local="clr-namespace:Calendar.UserInterface"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Icon="/Icon.ico">
-    <!-- Consider using a ListView/GridView -->
     <StackPanel>
         <TextBlock>Past due</TextBlock>
-        <ItemsControl ItemsSource="{Binding Path=PastDueAlerts}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="10">
-                        <TextBlock Text="{Binding Path=Alert.Name}" />
-                        <TextBlock Text="{Binding Path=Alert.Time}" />
-                        <Button Command="{Binding Path=SnoozeCommand}">Snooze</Button>
-                        <Button Command="{Binding Path=DoneCommand}">Done</Button>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ListView ItemsSource="{Binding Path=PastDueAlerts}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Alert.Name}" Header="Name" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Alert.Time}" Header="Time" Width="100"/>
+                    <GridViewColumn Header="-" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Path=SnoozeCommand}">Snooze</Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="-" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Path=DoneCommand}">Done</Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <TextBlock>Upcoming</TextBlock>
-        <ItemsControl ItemsSource="{Binding Path=FutureAlerts}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="10">
-                        <TextBlock Text="{Binding Path=Alert.Name}" />
-                        <TextBlock Text="{Binding Path=Alert.Time}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ListView ItemsSource="{Binding Path=FutureAlerts}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Alert.Name}" Header="Name" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Alert.Time}" Header="Time" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button Command="{Binding Path=MinimizeCommand}">Minimize</Button>
         <Button Command="{Binding Path=TodayCommand}">Check Today's Schedule</Button>
     </StackPanel>

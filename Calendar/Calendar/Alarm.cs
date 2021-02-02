@@ -20,13 +20,14 @@
 
         public void Snooze(Alert alert)
         {
-            this.done.Add(alert);
+            this.Done(alert);
             Alert snooze = new Alert { Name = alert.Name, Time = alert.Time + TimeSpan.FromMinutes(5) };
             this.snoozes.Add(snooze);
         }
 
         public void Done(Alert alert)
         {
+            this.snoozes.Remove(alert);
             this.done.Add(alert);
         }
 
