@@ -141,6 +141,7 @@
                         typeof(HourlyDaily),
                         typeof(Weekly),
                         typeof(Weekday),
+                        typeof(Monthly)
                     }
                 }
             };
