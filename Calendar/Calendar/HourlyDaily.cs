@@ -4,11 +4,40 @@
 
     public class HourlyDaily : Daily
     {
-        public int StartHour { get; set; }
+        private readonly int startHour;
+        private readonly int endHour;
+        private readonly int minute;
 
-        public int EndHour { get; set; }
+        public HourlyDaily(string text, int startHour, int endHour, int minute) : base(text)
+        {
+            this.startHour = startHour;
+            this.endHour = endHour;
+            this.minute = minute;
+        }
 
-        public int Minute { get; set; }
+        public int StartHour
+        {
+            get
+            {
+                return this.startHour;
+            }
+        }
+
+        public int EndHour
+        {
+            get
+            {
+                return this.endHour;
+            }
+        }
+
+        public int Minute
+        {
+            get
+            {
+                return this.minute;
+            }
+        }
 
         public override DateTime GetNextScheduledTime(DateTime currentTime)
         {

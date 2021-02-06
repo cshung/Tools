@@ -5,16 +5,20 @@
     public class AlertViewModel
     {
         private readonly MainWindowViewModel mainWindowViewModel;
+        private readonly Alert alert;
 
-        public AlertViewModel(MainWindowViewModel mainWindowViewModel)
+        public AlertViewModel(MainWindowViewModel mainWindowViewModel, Alert alert)
         {
             this.mainWindowViewModel = mainWindowViewModel;
+            this.alert = alert;
         }
 
         public Alert Alert
         {
-            get;
-            set;
+            get
+            {
+                return this.alert;
+            }
         }
 
         public ICommand SnoozeCommand

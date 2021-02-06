@@ -1,60 +1,24 @@
 namespace Calendar.UnitTests
 {
+    using Newtonsoft.Json;
     using System;
     using Xunit;
 
     public class SingleDailyTests
     {
-        [Fact]
-        public void EarlierHour()
+        [Theory]
+        [InlineData(@"{""HourOfDay"":1,""MinuteOfDay"":30}", @"""2021-01-01T00:00:00""", @"""2021-01-01T01:30:00""")]
+        [InlineData(@"{""HourOfDay"":1,""MinuteOfDay"":30}", @"""2021-01-01T01:00:00""", @"""2021-01-01T01:30:00""")]
+        [InlineData(@"{""HourOfDay"":1,""MinuteOfDay"":30}", @"""2021-01-01T01:30:00""", @"""2021-01-02T01:30:00""")]
+        [InlineData(@"{""HourOfDay"":1,""MinuteOfDay"":30}", @"""2021-01-01T01:31:00""", @"""2021-01-02T01:30:00""")]
+        [InlineData(@"{""HourOfDay"":1,""MinuteOfDay"":30}", @"""2021-01-01T02:00:00""", @"""2021-01-02T01:30:00""")]
+        public void SingleDailyTheory(string hourlyDailyText, string testingNowText, string testingExpectedText)
         {
-            SingleDaily singleDaily = new SingleDaily();
-            singleDaily.HourOfDay = 1;
-            singleDaily.MinuteOfDay = 0;
-            DateTime testingNow = new DateTime(2021, 1, 1, 0, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 1, 0, 0);
-            TestSingleDaily(singleDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void EarlierMinute()
-        {
-            SingleDaily singleDaily = new SingleDaily();
-            singleDaily.HourOfDay = 1;
-            singleDaily.MinuteOfDay = 30;
-            DateTime testingNow = new DateTime(2021, 1, 1, 1, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 1, 30, 0);
+            SingleDaily singleDaily = JsonConvert.DeserializeObject<SingleDaily>(hourlyDailyText, ScheduleItem.Jss())!; ;
+            DateTime testingNow = JsonConvert.DeserializeObject<DateTime>(testingNowText, ScheduleItem.Jss())!; ;
+            DateTime testingExpected = JsonConvert.DeserializeObject<DateTime>(testingExpectedText, ScheduleItem.Jss())!; ;
             DateTime scheduled = singleDaily.GetNextScheduledTime(testingNow);
-            TestSingleDaily(singleDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void RightNow()
-        {
-            SingleDaily singleDaily = new SingleDaily();
-            singleDaily.HourOfDay = 1;
-            singleDaily.MinuteOfDay = 0;
-            DateTime testingNow = new DateTime(2021, 1, 1, 1, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 2, 1, 0, 0);
-            TestSingleDaily(singleDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void Later()
-        {
-            SingleDaily singleDaily = new SingleDaily();
-            singleDaily.HourOfDay = 1;
-            singleDaily.MinuteOfDay = 0;
-            DateTime testingNow = new DateTime(2021, 1, 1, 1, 1, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 2, 1, 0, 0);
-            DateTime scheduled = singleDaily.GetNextScheduledTime(testingNow);
-            TestSingleDaily(singleDaily, testingNow, testingExpected);
-        }
-
-        private static void TestSingleDaily(SingleDaily singleDaily, DateTime testingNow, DateTime testingExpected)
-        {
-            DateTime scheduled = singleDaily.GetNextScheduledTime(testingNow);
-            Assert.Equal(scheduled, testingExpected);
+            Assert.Equal(testingExpected, scheduled);
         }
     }
 }

@@ -11,12 +11,7 @@
         {
             ScheduleItem[] items = new ScheduleItem[]
             {
-                new SingleDaily
-                {
-                    Text = "Duolingo",
-                    HourOfDay = 19,
-                    MinuteOfDay = 0
-                }
+                new SingleDaily("Duolingo", 19, 0)
             };
             DateTime handledTime = new DateTime(2021, 1, 1, 17, 0, 0);
             Alarm alarm = new Alarm(handledTime, items);
@@ -34,12 +29,7 @@
         {
             ScheduleItem[] items = new ScheduleItem[]
             {
-                new SingleDaily
-                {
-                    Text = "Duolingo",
-                    HourOfDay = 19,
-                    MinuteOfDay = 0
-                }
+                new SingleDaily("Duolingo", 19, 0)
             };
             DateTime handledTime = new DateTime(2021, 1, 1, 17, 0, 0);
             Alarm alarm = new Alarm(handledTime, items);
@@ -63,12 +53,7 @@
         {
             ScheduleItem[] items = new ScheduleItem[]
             {
-                new SingleDaily
-                {
-                    Text = "Duolingo",
-                    HourOfDay = 19,
-                    MinuteOfDay = 0
-                }
+                new SingleDaily("Duolingo", 19, 0)
             };
             DateTime handledTime = new DateTime(2021, 1, 1, 17, 0, 0);
             Alarm alarm = new Alarm(handledTime, items);
@@ -91,12 +76,7 @@
         {
             ScheduleItem[] items = new ScheduleItem[]
             {
-                new SingleDaily
-                {
-                    Text = "Duolingo",
-                    HourOfDay = 19,
-                    MinuteOfDay = 0
-                }
+                new SingleDaily("Duolingo", 19, 0)
             };
             DateTime handledTime = new DateTime(2021, 1, 1, 17, 0, 0);
             Alarm alarm = new Alarm(handledTime, items);

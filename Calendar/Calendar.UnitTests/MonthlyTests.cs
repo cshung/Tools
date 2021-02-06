@@ -1,136 +1,22 @@
 namespace Calendar.UnitTests
 {
+    using Newtonsoft.Json;
     using System;
     using Xunit;
 
     public class MonthlyTests
     {
-        [Fact]
-        public void EarlierToday()
+        [Theory]
+        [InlineData(@"{""Records"":[{""DayOfMonthValue"":1,""DailyValue"":{""$type"":""SingleDaily"",""HourOfDay"":9,""MinuteOfDay"":0}}]}", @"""2021-02-01T00:00:00""", @"""2021-02-01T09:00:00""")]
+        [InlineData(@"{""Records"":[{""DayOfMonthValue"":1,""DailyValue"":{""$type"":""SingleDaily"",""HourOfDay"":9,""MinuteOfDay"":0}}]}", @"""2021-02-01T09:00:00""", @"""2021-03-01T09:00:00""")]
+        [InlineData(@"{""Records"":[{""DayOfMonthValue"":1,""DailyValue"":{""$type"":""SingleDaily"",""HourOfDay"":9,""MinuteOfDay"":0}}]}", @"""2021-02-01T10:00:00""", @"""2021-03-01T09:00:00""")]
+        [InlineData(@"{""Records"":[{""DayOfMonthValue"":2,""DailyValue"":{""$type"":""SingleDaily"",""HourOfDay"":9,""MinuteOfDay"":0}}]}", @"""2021-02-01T10:00:00""", @"""2021-02-02T09:00:00""")]
+        [InlineData(@"{""Records"": [{""DayOfMonthValue"": 2,""DailyValue"": {""$type"": ""SingleDaily"",""HourOfDay"": 9,""MinuteOfDay"": 0}}, {""DayOfMonthValue"": 1,""DailyValue"": {""$type"": ""SingleDaily"",""HourOfDay"": 9,""MinuteOfDay"": 0}}]}", @"""2021-02-01T08:00:00""", @"""2021-02-01T09:00:00""")]
+        public void MonthlyTheory(string monthlyText, string testingNowText, string testingExpectedText)
         {
-            Monthly monthly = new Monthly
-            {
-                Records = new DayOfMonthRecord[]
-                {
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 1,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    }
-                }
-            };
-            DateTime testingNow = new DateTime(2021, 2, 1, 0, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 2, 1, 9, 0, 0);
-            TestMonthly(monthly, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void RightToday()
-        {
-            Monthly monthly = new Monthly
-            {
-                Records = new DayOfMonthRecord[]
-                {
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 1,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    }
-                }
-            };
-            DateTime testingNow = new DateTime(2021, 2, 1, 9, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 3, 1, 9, 0, 0);
-            TestMonthly(monthly, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void LaterToday()
-        {
-            Monthly monthly = new Monthly
-            {
-                Records = new DayOfMonthRecord[]
-                {
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 1,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    }
-                }
-            };
-            DateTime testingNow = new DateTime(2021, 2, 1, 10, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 3, 1, 9, 0, 0);
-            TestMonthly(monthly, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void Tomorrow()
-        {
-            Monthly monthly = new Monthly
-            {
-                Records = new DayOfMonthRecord[]
-                {
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 2,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    }
-                }
-            };
-            DateTime testingNow = new DateTime(2021, 2, 1, 10, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 2, 2, 9, 0, 0);
-            TestMonthly(monthly, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void SoonerWins()
-        {
-            Monthly monthly = new Monthly
-            {
-                Records = new DayOfMonthRecord[]
-                {
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 2,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    },
-                    new DayOfMonthRecord
-                    {
-                        DayOfMonthValue = 1,
-                        DailyValue = new SingleDaily
-                        {
-                            HourOfDay = 9,
-                            MinuteOfDay = 0,
-                        }
-                    }
-                }
-            };
-            DateTime testingNow = new DateTime(2021, 2, 1, 8, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 2, 1, 9, 0, 0);
-            TestMonthly(monthly, testingNow, testingExpected);
-        }
-
-        private static void TestMonthly(Monthly monthly, DateTime testingNow, DateTime testingExpected)
-        {
+            Monthly monthly = JsonConvert.DeserializeObject<Monthly>(monthlyText, ScheduleItem.Jss())!;
+            DateTime testingNow = JsonConvert.DeserializeObject<DateTime>(testingNowText, ScheduleItem.Jss())!; ;
+            DateTime testingExpected = JsonConvert.DeserializeObject<DateTime>(testingExpectedText, ScheduleItem.Jss())!; ;
             DateTime scheduled = monthly.GetNextScheduledTime(testingNow);
             Assert.Equal(scheduled, testingExpected);
         }

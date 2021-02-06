@@ -1,6 +1,5 @@
 ﻿namespace Calendar.UserInterface
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -14,8 +13,8 @@
         private readonly MinimizeCommand minimizeCommand;
         private readonly TodayCommand todayCommand;
         private readonly Alarm alarm;
-        private List<Alert> futureAlerts;
-        private List<Alert> pastDueAlerts;
+        private List<Alert>? futureAlerts;
+        private List<Alert>? pastDueAlerts;
 
         public MainWindowViewModel(IMainWindow mainWindow)
         {
@@ -25,7 +24,7 @@
             this.todayCommand = new TodayCommand(this);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand MinimizeCommand
         {
@@ -49,7 +48,7 @@
                 List<AlertViewModel> futureAlertModels = new List<AlertViewModel>();
                 for (int i = 0; this.futureAlerts != null && i < this.futureAlerts.Count; i++)
                 {
-                    futureAlertModels.Add(new AlertViewModel(this) { Alert = this.futureAlerts[i] });
+                    futureAlertModels.Add(new AlertViewModel(this, this.futureAlerts[i]));
                 }
 
                 return futureAlertModels;
@@ -71,7 +70,7 @@
                 List<AlertViewModel> pastDueAlertModels = new List<AlertViewModel>();
                 for (int i = 0; this.pastDueAlerts != null && i < this.pastDueAlerts.Count; i++)
                 {
-                    pastDueAlertModels.Add(new AlertViewModel(this) { Alert = this.pastDueAlerts[i] });
+                    pastDueAlertModels.Add(new AlertViewModel(this, this.pastDueAlerts[i]));
                 }
 
                 return pastDueAlertModels;
@@ -130,25 +129,9 @@
 
         private ScheduleItem[] CreateScheduleItem()
         {
-            JsonSerializerSettings jss = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
-                SerializationBinder = new KnownTypesBinder
-                {
-                    KnownTypes = new List<Type>
-                    {
-                        typeof(SingleDaily),
-                        typeof(HourlyDaily),
-                        typeof(Weekly),
-                        typeof(Weekday),
-                        typeof(Monthly)
-                    }
-                }
-            };
-
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "schedule.json");
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "schedule.json");
             string content = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<ScheduleItem[]>(content, jss);
+            return ScheduleItem.Load(content);
         }
     }
 }

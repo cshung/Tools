@@ -5,14 +5,18 @@
 
     public class SnoozeCommand : ICommand
     {
-        private AlertViewModel alertViewModel;
+        private readonly AlertViewModel alertViewModel;
 
         public SnoozeCommand(AlertViewModel alertViewModel)
         {
             this.alertViewModel = alertViewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {

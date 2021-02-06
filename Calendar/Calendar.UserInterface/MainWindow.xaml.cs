@@ -35,7 +35,7 @@
             this.dispatcherTimer.IsEnabled = true;
         }
 
-        private void OnTimerTick(object sender, EventArgs e)
+        private void OnTimerTick(object? sender, EventArgs e)
         {
             this.mainWindowViewModel.OnTimerTick();
             this.WindowState = WindowState.Normal;

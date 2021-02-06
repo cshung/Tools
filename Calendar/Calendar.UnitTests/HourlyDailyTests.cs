@@ -1,122 +1,28 @@
 namespace Calendar.UnitTests
 {
+    using Newtonsoft.Json;
     using System;
     using Xunit;
 
     public class HourlyDailyTests
     {
-        [Fact]
-        public void EarlierHour()
+        [Theory]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T00:00:00""", @"""2021-01-01T09:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T09:29:00""", @"""2021-01-01T09:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T09:30:00""", @"""2021-01-01T10:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T09:31:00""", @"""2021-01-01T10:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T10:00:00""", @"""2021-01-01T10:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T10:30:00""", @"""2021-01-01T11:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T16:30:00""", @"""2021-01-02T09:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T16:31:00""", @"""2021-01-02T09:30:00""")]
+        [InlineData(@"{""StartHour"":9,""EndHour"":16,""Minute"":30}", @"""2021-01-01T17:00:00""", @"""2021-01-02T09:30:00""")]
+        public void HourlyDailyTheory(string hourlyDailyText, string testingNowText, string testingExpectedText)
         {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 4;
-            DateTime testingNow = new DateTime(2021, 1, 1, 0, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 9, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void EarlierMinute()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 9, 29, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 9, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void RightStart()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 9, 30, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 10, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void AfterEndHour()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 17, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 2, 9, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void AfterEndMinute()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 16, 31, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 2, 9, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void RightEnd()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 16, 30, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 2, 9, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void InsideWithinHour()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 10, 0, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 10, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void InsideRightNow()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 10, 30, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 11, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        [Fact]
-        public void InsideNextHour()
-        {
-            HourlyDaily hourlyDaily = new HourlyDaily();
-            hourlyDaily.StartHour = 9;
-            hourlyDaily.Minute = 30;
-            hourlyDaily.EndHour = 16;
-            DateTime testingNow = new DateTime(2021, 1, 1, 9, 31, 0);
-            DateTime testingExpected = new DateTime(2021, 1, 1, 10, 30, 0);
-            TestHourlyDaily(hourlyDaily, testingNow, testingExpected);
-        }
-
-        private static void TestHourlyDaily(HourlyDaily hourlyDaily, DateTime testingNow, DateTime testingExpected)
-        {
+            HourlyDaily hourlyDaily = JsonConvert.DeserializeObject<HourlyDaily>(hourlyDailyText, ScheduleItem.Jss())!; ;
+            DateTime testingNow = JsonConvert.DeserializeObject<DateTime>(testingNowText, ScheduleItem.Jss())!; ;
+            DateTime testingExpected = JsonConvert.DeserializeObject<DateTime>(testingExpectedText, ScheduleItem.Jss())!; ;
             DateTime scheduled = hourlyDaily.GetNextScheduledTime(testingNow);
-            Assert.Equal(scheduled, testingExpected);
+            Assert.Equal(testingExpected, scheduled);
         }
     }
 }

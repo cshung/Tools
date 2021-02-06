@@ -4,7 +4,20 @@
 
     public class Monthly : ScheduleItem
     {
-        public DayOfMonthRecord[] Records { get; set; }
+        private readonly DayOfMonthRecord[] records;
+
+        public Monthly(string text, DayOfMonthRecord[] records) : base(text)
+        {
+            this.records = records;
+        }
+
+        public DayOfMonthRecord[] Records
+        {
+            get
+            {
+                return this.records;
+            }
+        }
 
         public override DateTime GetNextScheduledTime(DateTime currentTime)
         {

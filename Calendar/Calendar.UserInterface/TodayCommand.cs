@@ -6,19 +6,21 @@
     public class TodayCommand : ICommand
     {
         private readonly MainWindowViewModel mainWindowViewModel;
-        private bool canExecute;
 
         public TodayCommand(MainWindowViewModel mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            this.canExecute = true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute;
+            return true;
         }
 
         public void Execute(object parameter)

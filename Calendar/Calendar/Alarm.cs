@@ -21,7 +21,7 @@
         public void Snooze(Alert alert)
         {
             this.Done(alert);
-            Alert snooze = new Alert { Name = alert.Name, Time = alert.Time + TimeSpan.FromMinutes(5) };
+            Alert snooze = new Alert(alert.Name, alert.Time + TimeSpan.FromMinutes(5));
             this.snoozes.Add(snooze);
         }
 
@@ -64,17 +64,17 @@
                 {
                     if (mostRecentAlerts.Count == 0)
                     {
-                        mostRecentAlerts.Add(new Alert { Name = item.Text, Time = nextScheduledTime });
+                        mostRecentAlerts.Add(new Alert(item.Text, nextScheduledTime));
                         mostRecentAlertTime = nextScheduledTime;
                     }
                     else if (mostRecentAlertTime == nextScheduledTime)
                     {
-                        mostRecentAlerts.Add(new Alert { Name = item.Text, Time = nextScheduledTime });
+                        mostRecentAlerts.Add(new Alert(item.Text, nextScheduledTime));
                     }
                     else if (mostRecentAlertTime > nextScheduledTime)
                     {
                         mostRecentAlerts.Clear();
-                        mostRecentAlerts.Add(new Alert { Name = item.Text, Time = nextScheduledTime });
+                        mostRecentAlerts.Add(new Alert(item.Text, nextScheduledTime));
                         mostRecentAlertTime = nextScheduledTime;
                     }
                 }

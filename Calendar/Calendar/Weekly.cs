@@ -4,7 +4,20 @@
 
     public class Weekly : ScheduleItem
     {
-        public DayOfWeekRecord[] Records { get; set; }
+        private readonly DayOfWeekRecord[] records;
+
+        public Weekly(string text, DayOfWeekRecord[] records) : base(text)
+        {
+            this.records = records;
+        }
+
+        public DayOfWeekRecord[] Records
+        {
+            get
+            {
+                return this.records;
+            }
+        }
 
         public override DateTime GetNextScheduledTime(DateTime currentTime)
         {

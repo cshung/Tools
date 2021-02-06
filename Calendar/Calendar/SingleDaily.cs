@@ -4,9 +4,30 @@
 
     public class SingleDaily : Daily
     {
-        public int HourOfDay { get; set; }
+        private readonly int hourOfDay;
+        private readonly int minuteOfDay;
 
-        public int MinuteOfDay { get; set; }
+        public SingleDaily(string text, int hourOfDay, int minuteOfDay) : base(text)
+        {
+            this.hourOfDay = hourOfDay;
+            this.minuteOfDay = minuteOfDay;
+        }
+
+        public int HourOfDay
+        {
+            get
+            {
+                return this.hourOfDay;
+            }
+        }
+
+        public int MinuteOfDay
+        {
+            get
+            {
+                return this.minuteOfDay;
+            }
+        }
 
         public override DateTime GetNextScheduledTime(DateTime currentTime)
         {

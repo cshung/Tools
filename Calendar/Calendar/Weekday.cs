@@ -4,22 +4,32 @@
 
     public class Weekday : ScheduleItem
     {
-        public Daily DailyValue;
+        private readonly Daily dailyValue;
+
+        public Weekday(string text, Daily dailyValue) : base(text)
+        {
+            this.dailyValue = dailyValue;
+        }
+
+        public Daily DailyValue
+        {
+            get
+            {
+                return this.dailyValue;
+            }
+        }
 
         public override DateTime GetNextScheduledTime(DateTime currentTime)
         {
-            return new Weekly
+            DayOfWeekRecord[] records = new DayOfWeekRecord[]
             {
-                Text = this.Text,
-                Records = new DayOfWeekRecord[]
-                {
-                    new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Monday, DailyValue = this.DailyValue },
-                    new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Tuesday, DailyValue = this.DailyValue },
-                    new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Wednesday, DailyValue = this.DailyValue },
-                    new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Thursday, DailyValue = this.DailyValue },
-                    new DayOfWeekRecord { DayOfWeekValue = DayOfWeek.Friday, DailyValue = this.DailyValue },
-                }
-            }.GetNextScheduledTime(currentTime);
+                new DayOfWeekRecord(DayOfWeek.Monday, this.DailyValue),
+                new DayOfWeekRecord(DayOfWeek.Tuesday, this.DailyValue),
+                new DayOfWeekRecord(DayOfWeek.Wednesday, this.DailyValue),
+                new DayOfWeekRecord(DayOfWeek.Thursday, this.DailyValue),
+                new DayOfWeekRecord(DayOfWeek.Friday, this.DailyValue),
+            };
+            return new Weekly(this.Text, records).GetNextScheduledTime(currentTime);
         }
     }
 }

@@ -4,13 +4,34 @@
 
     public class Alert
     {
-        public string Name { get; set; }
+        private readonly string name;
+        private readonly DateTime time;
 
-        public DateTime Time { get; set; }
+        public Alert(string name, DateTime time)
+        {
+            this.name = name;
+            this.time = time;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+        }
+
+        public DateTime Time
+        {
+            get
+            {
+                return this.time;
+            }
+        }
 
         public override bool Equals(object obj)
         {
-            Alert that = obj as Alert;
+            Alert? that = obj as Alert;
             if (that == null)
             {
                 return false;
