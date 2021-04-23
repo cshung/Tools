@@ -29,9 +29,9 @@
             this.WindowState = WindowState.Minimized;
         }
 
-        public void StartTimer(DateTime targetTime)
+        public void StartTimer(TimeSpan fromNow)
         {
-            this.dispatcherTimer.Interval = targetTime - DateTime.Now;
+            this.dispatcherTimer.Interval = fromNow;
             this.dispatcherTimer.IsEnabled = true;
         }
 

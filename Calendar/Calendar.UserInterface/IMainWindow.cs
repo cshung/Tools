@@ -4,7 +4,7 @@
 
     public interface IMainWindow
     {
-        void StartTimer(DateTime targetTime);
+        void StartTimer(TimeSpan fromNow);
 
         void Minimize();
     }

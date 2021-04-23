@@ -109,7 +109,7 @@
             DateTime now = DateTimeExtensions.NowSafe();
             this.pastDueAlerts = this.alarm.GetPastDues(now);
             this.futureAlerts = this.alarm.GetFutures(now);
-            this.mainWindow.StartTimer(this.futureAlerts[0].Time);
+            this.mainWindow.StartTimer(this.futureAlerts[0].Time - now);
             if (this.PropertyChanged != null)
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(this.FutureAlerts)));
