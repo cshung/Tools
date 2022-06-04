@@ -30,7 +30,7 @@
             var b = a.GetParentWindow();
             var c = b?.Handler;
             var d = c?.PlatformView;
-            Console.WriteLine(d?.GetType()?.Name);
+            Console.WriteLine(d?.GetType()?.FullName);
         }
 
         public void StartTimer(TimeSpan fromNow)
